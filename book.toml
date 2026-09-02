@@ -1,0 +1,16 @@
+[book]
+title = "LangGraph in Action · 场景 agent 实战"
+description = "《笨办法学 Agent》下册。用 LangGraph 把场景 agent 做出来、放到线上给人用。基础 12 期，经典例子重做 7 个，企业空白原创 3 个，读者场景持续。"
+authors = ["Roy Lei"]
+language = "zh-CN"
+src = "src"
+
+[output.html]
+git-repository-url = "https://github.com/Leihb/langgraph-in-action"
+edit-url-template = "https://github.com/Leihb/langgraph-in-action/edit/main/{path}"
+default-theme = "rust"
+preferred-dark-theme = "navy"
+
+[output.html.fold]
+enable = true
+level = 0
