@@ -1,4 +1,6 @@
-# LangGraph in Action · 场景 agent 实战
+# 笨办法学 Agent · 下册：用 LangGraph 上线
+
+> 仓库名 langgraph-in-action。上册在 [learn-agent-the-hard-way](https://github.com/Leihb/learn-agent-the-hard-way)。
 
 **任何人都可以写 agent。这个仓库教你把场景说清楚，剩下的交给 LangGraph 和你的 AI。**
 

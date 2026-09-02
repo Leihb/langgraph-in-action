@@ -1,6 +1,6 @@
 [book]
-title = "LangGraph in Action · 场景 agent 实战"
-description = "《笨办法学 Agent》下册。用 LangGraph 把场景 agent 做出来、放到线上给人用。基础 12 期，经典例子重做 7 个，企业空白原创 3 个，读者场景持续。"
+title = "笨办法学 Agent · 下册：用 LangGraph 上线"
+description = "《笨办法学 Agent》下册。上册不用框架亲手写出 harness 的每一层，这一册用 LangGraph 把场景 agent 做出来、放到线上给人用。基础 11 期、部署 4 期，经典例子重做 7 个，企业空白原创 3 个，读者场景持续。"
 authors = ["Roy Lei"]
 language = "zh-CN"
 src = "src"

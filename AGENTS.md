@@ -1,6 +1,6 @@
 # 给 AI 读的说明
 
-你（Claude Code、Codex 或别的编码 agent）正在读一个教学仓库。它的读者会 fork 之后让你"改成我的场景"。
+你（Claude Code、Codex 或别的编码 agent）正在读《笨办法学 Agent · 下册：用 LangGraph 上线》的教学仓库。它的读者会 fork 之后让你"改成我的场景"。
 下面是你需要知道的全部约定。
 
 ## 这个仓库是什么
