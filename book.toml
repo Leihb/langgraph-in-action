@@ -10,6 +10,7 @@ git-repository-url = "https://github.com/Leihb/langgraph-in-action"
 edit-url-template = "https://github.com/Leihb/langgraph-in-action/edit/main/{path}"
 default-theme = "rust"
 preferred-dark-theme = "navy"
+additional-js = ["theme/mermaid.min.js", "theme/mermaid-init.js"]
 
 [output.html.fold]
 enable = true
