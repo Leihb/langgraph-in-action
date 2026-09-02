@@ -10,15 +10,18 @@
 - [第 4 期：记住对话——checkpointer 与 thread_id](part1/ep04.md)
 - [第 5 期：人工确认——interrupt 停下来等人](part1/ep05.md)
 - [第 6 期：长期记忆——Store 跨会话记东西](part1/ep06.md)
-- [第 7 期：子图与多 agent](part1/ep07.md)
-- [第 8 期：看得见——模型网关与 Langfuse](part1/ep08.md)
+- [第 7 期：工具从别人那里来——MCP](part1/ep07.md)
+- [第 8 期：检索——embedding 当节点还是当工具](part1/ep08.md)
+- [第 9 期：skill——按需加载的知识](part1/ep09.md)
+- [第 10 期：子图与多 agent](part1/ep10.md)
+- [第 11 期：看得见——模型网关与 Langfuse](part1/ep11.md)
 
 # Part 2 · 部署
 
-- [第 9 期：FastAPI 包一层——流式、会话、最简鉴权](part2/ep09.md)
-- [第 10 期：换真实存储——SQLite、Postgres 与长任务](part2/ep10.md)
-- [第 11 期：放到线上给同事用——容器、密钥、成本](part2/ep11.md)
-- [第 12 期：什么时候直接拿 deepagents](part2/ep12.md)
+- [第 12 期：FastAPI 包一层——流式、会话、最简鉴权](part2/ep12.md)
+- [第 13 期：换真实存储——SQLite、Postgres 与长任务](part2/ep13.md)
+- [第 14 期：放到线上给同事用——容器、密钥、成本](part2/ep14.md)
+- [第 15 期：什么时候直接拿 deepagents](part2/ep15.md)
 
 # Part 3 · 经典例子重做
 
