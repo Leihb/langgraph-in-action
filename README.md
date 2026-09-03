@@ -9,6 +9,10 @@
 checkpointer 是练习 11 到 13 的会话文件加压缩，interrupt 是练习 9 到 10 的权限闸门，
 子图是练习 19 到 21 的 subagent，Store 是练习 15 的跨会话记忆。
 
+## 📖 在线阅读
+
+**https://leihb.github.io/langgraph-in-action/**
+
 内容分五部分：
 
 1. **基础**：三层判断、第一张图、工具与条件边、checkpointer、interrupt、Store、MCP、检索、skill、子图、观测。11 期。
