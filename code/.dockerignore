@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+*/data/cancel_log.txt
+.env
