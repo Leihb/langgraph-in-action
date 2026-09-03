@@ -5,3 +5,4 @@ __pycache__/
 *.sqlite
 *.db
 .env
+code/ep05/data/cancel_log.txt
