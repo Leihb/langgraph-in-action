@@ -19,3 +19,6 @@ LANGFUSE_ENABLED = bool(LANGFUSE_PUBLIC_KEY and LANGFUSE_SECRET_KEY)
 # 是两把完全不同的钥匙，别搞混——这把是"谁能调这个服务"，那把是"这个
 # 服务拿什么身份去调模型"。
 API_KEY = os.environ.get("API_KEY", "sk-dev-key")
+
+# 第 13 期起：checkpointer/store 换成 Postgres 时用，不设就还用 SQLite。
+POSTGRES_URL = os.environ.get("POSTGRES_URL")
