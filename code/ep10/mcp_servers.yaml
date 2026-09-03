@@ -1,0 +1,10 @@
+# MCP 服务器清单。key 是服务名，value 交给 MultiServerMCPClient，
+# 格式就是它要的 connection dict：transport + 怎么启动这个进程。
+#
+# mcp-server-time 是官方维护的开源参考实现，不是我们写的代码，
+# 通过 uvx 直接跑，不用先 clone、不用装依赖。
+servers:
+  time:
+    transport: stdio
+    command: uvx
+    args: ["mcp-server-time"]
