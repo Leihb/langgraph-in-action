@@ -13,6 +13,9 @@ dependencies = [
     "fastapi>=0.115",
     "uvicorn[standard]>=0.30",
     "python-dotenv>=1.0",
+    "langchain-mcp-adapters>=0.3.2",
+    "pyyaml>=6.0.3",
+    "aiosqlite>=0.22.1",
 ]
 
 [project.optional-dependencies]
