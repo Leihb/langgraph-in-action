@@ -1,13 +1,16 @@
-# 笨办法学 Agent · 下册：用 LangGraph 上线
+# 笨办法学 Agent · 用 LangGraph 上线
 
-> 仓库名 langgraph-in-action。上册在 [learn-agent-the-hard-way](https://github.com/Leihb/learn-agent-the-hard-way)。
+> 仓库名 langgraph-in-action。同系列第一本《笨办法学 Agent》在
+> [learn-agent-the-hard-way](https://github.com/Leihb/learn-agent-the-hard-way)，
+> 不需要先读那本也能读这本。
 
 **任何人都可以写 agent。这个仓库教你把场景说清楚，剩下的交给 LangGraph 和你的 AI。**
 
-这是《笨办法学 Agent》的下册。上册不用框架，亲手写出一个 agent harness 的每一层，为的是看懂。
-这一本用 LangGraph，为的是上线。每引入一个 LangGraph 概念，都会指回上册对应的练习：
-checkpointer 是练习 11 到 13 的会话文件加压缩，interrupt 是练习 9 到 10 的权限闸门，
-子图是练习 19 到 21 的 subagent，Store 是练习 15 的跨会话记忆。
+这是《笨办法学 Agent》系列的第二本。第一本不用框架，亲手写出一个 agent harness 的每一层，
+为的是看懂；这一本用 LangGraph，为的是上线。两本书没有强制的先后顺序——第一本的每个
+练习都不长在你脑子里也能跟着这本往下走。读过第一本的话，正文会不断指回对应的练习，
+每次指回都会顺带说清楚那个练习解决的是什么问题，比如 checkpointer 对应第一本练习 11
+到 13 的会话文件加压缩、interrupt 对应练习 9 到 10 的权限闸门。
 
 ## 📖 在线阅读
 
