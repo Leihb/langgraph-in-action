@@ -7,3 +7,4 @@ __pycache__/
 .env
 code/ep05/data/cancel_log.txt
 code/ep06/data/cancel_log.txt
+code/ep07/data/cancel_log.txt

@@ -16,7 +16,7 @@ CONFIG = Path(__file__).parent / "mcp_servers.yaml"
 async def load_mcp_tools() -> list:
     servers = yaml.safe_load(CONFIG.read_text())["servers"]
     client = MultiServerMCPClient(servers)
-    # 一个服务器逐个连，不是一次性 client.get_tools() 全拿——那样只要有一个服务器
+    # 一个服务器逐个连——一次性 client.get_tools() 全拿的话，只要有一个服务器
     # 连不上，会连累其他连得上的服务器一个工具都用不了。
     tools = []
     for name in servers:
