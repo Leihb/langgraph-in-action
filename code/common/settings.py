@@ -22,3 +22,8 @@ API_KEY = os.environ.get("API_KEY", "sk-dev-key")
 
 # 第 13 期起：checkpointer/store 换成 Postgres 时用，不设就还用 SQLite。
 POSTGRES_URL = os.environ.get("POSTGRES_URL")
+
+# 第 14 期起：本地 embedding 检索（第 8 期的 search_faq）的开关，默认开。
+# 设成 0 就不注册这个工具、也不 import torch——Render 免费实例 512MB 内存
+# 装不下它（实测 import 完 sentence-transformers 进程就 485MB），见第 14 期正文。
+RETRIEVAL_ENABLED = os.environ.get("RETRIEVAL_ENABLED", "1") not in ("0", "false", "no")

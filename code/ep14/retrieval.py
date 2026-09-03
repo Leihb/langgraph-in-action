@@ -8,8 +8,11 @@ DeepSeek 走的是 chat 接口，不提供 embedding。这一期换成一个纯�
 import json
 from pathlib import Path
 
-import numpy as np
-from sentence_transformers import SentenceTransformer
+# 第 14 期改动：numpy 和 sentence_transformers 不在模块顶部 import，挪进真正
+# 用到它们的函数里。原因是内存——在容器里实测，import torch 让进程从 102MB
+# 涨到 298MB，再 import sentence_transformers 到 485MB，而这时候还没有任何
+# 请求进来。放在顶部意味着只要 `from ep14 import retrieval` 这一行执行，
+# 这 380MB 就花出去了；挪进函数，不调 search_faq 就一分不花。
 
 DATA = Path(__file__).parent / "data"
 FAQ = json.loads((DATA / "faq.json").read_text())
@@ -20,13 +23,15 @@ QUERY_PREFIX = "为这个句子生成表示以用于检索相关文章："
 
 MODEL_NAME = "BAAI/bge-small-zh-v1.5"
 
-_model: SentenceTransformer | None = None
-_faq_vecs: np.ndarray | None = None
+_model = None
+_faq_vecs = None
 
 
-def _encoder() -> SentenceTransformer:
+def _encoder():
     global _model
     if _model is None:
+        from sentence_transformers import SentenceTransformer
+
         # 权重下载过一次之后本地就有缓存了，但默认加载方式每次还是会联网核对
         # 一遍版本——网络不稳的时候这一步会卡很久（亲测卡满两分钟）。
         # local_files_only=True 直接跳过这一步，缓存里没有才退回联网下载。
@@ -37,11 +42,11 @@ def _encoder() -> SentenceTransformer:
     return _model
 
 
-def _embed(texts: list[str]) -> np.ndarray:
+def _embed(texts: list[str]):
     return _encoder().encode(texts, normalize_embeddings=True)
 
 
-def _faq_vectors() -> np.ndarray:
+def _faq_vectors():
     global _faq_vecs
     if _faq_vecs is None:
         _faq_vecs = _embed([f["question"] for f in FAQ])
@@ -50,6 +55,8 @@ def _faq_vectors() -> np.ndarray:
 
 def search_faq(query: str, top_k: int = 2) -> list[dict]:
     """返回最相关的 top_k 条 FAQ，按相似度降序，附带得分。"""
+    import numpy as np
+
     q_vec = _embed([QUERY_PREFIX + query])[0]
     sims = _faq_vectors() @ q_vec  # 两边都归一化过，点积就是余弦相似度
     order = np.argsort(-sims)[:top_k]

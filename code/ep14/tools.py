@@ -11,6 +11,7 @@ from langchain_core.tools import tool
 from langgraph.prebuilt import ToolRuntime
 from langgraph.types import Command, interrupt
 
+from common import settings
 from ep14 import retrieval
 from ep14.registry import SKILLS, SKILL_NAMES
 
@@ -132,4 +133,10 @@ def check_orders(order_ids: list[str], aspect: str, runtime: ToolRuntime) -> Com
 
 
 BASE_TOOLS = [get_order, get_policy, cancel_order, remember_note]
-TOOLS = [*BASE_TOOLS, search_faq, load_skill, check_orders]
+TOOLS = [*BASE_TOOLS, load_skill, check_orders]
+
+# 第 14 期改动：search_faq 按开关注册。工具不在这张表里，模型就看不见它、
+# 不会去调它，retrieval 里那几百 MB 的 import 也就永远不会发生。免费实例
+# 上关掉它是拿"通用问答查不到"换"服务能起来"，正文里算了这笔账。
+if settings.RETRIEVAL_ENABLED:
+    TOOLS.append(search_faq)
