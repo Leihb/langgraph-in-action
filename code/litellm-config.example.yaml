@@ -1,0 +1,8 @@
+model_list:
+  - model_name: chat-default          # 对外的别名，业务代码只认这个（MODEL_NAME）
+    litellm_params:
+      model: deepseek/deepseek-chat   # 真实供应商/型号，只有网关知道
+      api_key: os.environ/DEEPSEEK_API_KEY
+
+general_settings:
+  master_key: sk-local                # 网关自己签发的密钥，对应 MODEL_API_KEY
