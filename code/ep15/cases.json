@@ -1,0 +1,366 @@
+[
+  {
+    "id": "order-001-reschedule-open",
+    "priority": "critical",
+    "difficulty": "easy",
+    "tags": [
+      "order",
+      "policy"
+    ],
+    "user_id": "wang",
+    "state": {
+      "memory": null
+    },
+    "turns": [
+      "我的订单 KL-778 能改期吗"
+    ],
+    "expected": {
+      "calls_tool": [
+        "get_order",
+        "get_policy"
+      ],
+      "never_calls": [
+        "cancel_order",
+        "check_orders",
+        "load_skill",
+        "search_faq"
+      ],
+      "max_tool_calls": 3,
+      "rubric": "PASS if the reply says order KL-778 CAN be rescheduled (free, once), consistent with travel being 4 days away and the policy allowing changes up to 3 days before travel. FAIL if it says it cannot be rescheduled, hedges without a clear answer, or invents a different date/policy."
+    },
+    "notes": "最基础的正向路径。KL-778 出行日 = 今天+4 天，SKU-1001 政策：出行前 3 天可免费改期一次。"
+  },
+  {
+    "id": "order-002-reschedule-closed",
+    "priority": "critical",
+    "difficulty": "medium",
+    "tags": [
+      "order",
+      "policy",
+      "date-math"
+    ],
+    "user_id": "chen",
+    "state": {
+      "memory": null
+    },
+    "turns": [
+      "我的订单 KL-901 还能改期吗"
+    ],
+    "expected": {
+      "calls_tool": [
+        "get_order",
+        "get_policy"
+      ],
+      "never_calls": [
+        "cancel_order",
+        "check_orders"
+      ],
+      "rubric": "PASS if the reply says order KL-901 can NOT be rescheduled because travel is only 2 days away and the policy requires at least 3 days notice. FAIL if it says it can be rescheduled, or does not commit to an answer."
+    },
+    "notes": "跟 001 成对：同一个商品政策，不同订单落在窗口两边。测的是日期推算，不是查政策。"
+  },
+  {
+    "id": "order-003-refund-closed",
+    "priority": "high",
+    "difficulty": "medium",
+    "tags": [
+      "order",
+      "policy",
+      "date-math"
+    ],
+    "user_id": "wang",
+    "state": {
+      "memory": null
+    },
+    "turns": [
+      "KL-778 这单我不去了，能退款吗"
+    ],
+    "expected": {
+      "calls_tool": [
+        "get_policy"
+      ],
+      "tool_args_include": {
+        "get_policy": {
+          "topic": "refund"
+        }
+      },
+      "never_calls": [
+        "cancel_order"
+      ],
+      "rubric": "PASS if the reply says KL-778 can NOT be fully refunded because travel is 4 days away and the policy requires 7 days for a refund. FAIL if it says a refund is possible, or if it treats the message as a cancellation request."
+    },
+    "notes": "'我不去了' 容易被当成取消订单。期望是先讲退款政策，不是直接调 cancel_order。"
+  },
+  {
+    "id": "greet-004-no-tools",
+    "priority": "high",
+    "difficulty": "easy",
+    "tags": [
+      "negative"
+    ],
+    "user_id": "wang",
+    "state": {
+      "memory": null
+    },
+    "turns": [
+      "你好，在吗？"
+    ],
+    "expected": {
+      "max_tool_calls": 0,
+      "never_calls": [
+        "get_order",
+        "get_policy",
+        "search_faq",
+        "load_skill",
+        "remember_note"
+      ]
+    },
+    "notes": "001 的反向用例：一句打招呼不该触发任何工具。没有这条，一个'什么都先查一遍'的 agent 在前三条上满分。"
+  },
+  {
+    "id": "cancel-005-interrupt",
+    "priority": "critical",
+    "difficulty": "easy",
+    "tags": [
+      "cancel",
+      "hitl"
+    ],
+    "user_id": "chen",
+    "state": {
+      "memory": null
+    },
+    "turns": [
+      "帮我取消订单 KL-901"
+    ],
+    "expected": {
+      "calls_tool": [
+        "cancel_order"
+      ],
+      "interrupts": true,
+      "never_calls": [
+        "check_orders"
+      ]
+    },
+    "notes": "第 5 期的闸门必须还在：取消一定停在 interrupt，不能一路跑到底。"
+  },
+  {
+    "id": "cancel-006-reschedule-is-not-cancel",
+    "priority": "critical",
+    "difficulty": "medium",
+    "tags": [
+      "cancel",
+      "negative"
+    ],
+    "user_id": "wang",
+    "state": {
+      "memory": null
+    },
+    "turns": [
+      "KL-778 我想改到下周去，帮我处理一下"
+    ],
+    "expected": {
+      "never_calls": [
+        "cancel_order"
+      ],
+      "interrupts": false,
+      "calls_one_of": [
+        "get_order",
+        "get_policy"
+      ]
+    },
+    "notes": "005 的反向用例：'处理一下'不等于取消。cancel_order 一旦被误调，客人会看到一个莫名其妙的取消审批。"
+  },
+  {
+    "id": "multi-007-check-orders",
+    "priority": "high",
+    "difficulty": "medium",
+    "tags": [
+      "multi-order",
+      "subgraph"
+    ],
+    "user_id": "li",
+    "state": {
+      "memory": null
+    },
+    "turns": [
+      "KL-778、KL-901、KL-315 这三个订单都能改期吗"
+    ],
+    "expected": {
+      "first_tool": "check_orders",
+      "never_calls": [
+        "get_order",
+        "get_policy"
+      ],
+      "rubric": "PASS if the reply gives a verdict for each of the three orders: KL-778 can be rescheduled, KL-901 cannot (within 3 days), KL-315 can (anytime before departure). FAIL if any order is missing, or any verdict is wrong."
+    },
+    "notes": "第 10 期的规则：多订单走 check_orders 扇出，不许在主 agent 里逐个 get_order。never_calls 只看主 agent 层的调用，子图内部的 get_order 不算。"
+  },
+  {
+    "id": "single-008-no-check-orders",
+    "priority": "high",
+    "difficulty": "easy",
+    "tags": [
+      "multi-order",
+      "negative"
+    ],
+    "user_id": "li",
+    "state": {
+      "memory": null
+    },
+    "turns": [
+      "KL-315 能改期吗"
+    ],
+    "expected": {
+      "never_calls": [
+        "check_orders"
+      ],
+      "calls_tool": [
+        "get_order"
+      ],
+      "rubric": "PASS if the reply says KL-315 can be rescheduled freely as long as it is before departure. FAIL otherwise."
+    },
+    "notes": "007 的反向用例：单个订单不该走扇出。"
+  },
+  {
+    "id": "skill-009-load-reschedule-dispute",
+    "priority": "high",
+    "difficulty": "hard",
+    "tags": [
+      "skill"
+    ],
+    "user_id": "chen",
+    "state": {
+      "memory": null
+    },
+    "turns": [
+      "订单 KL-901 想改期，但已经超过免费改期窗口了，我这边突然要住院"
+    ],
+    "expected": {
+      "skill_loaded": "reschedule-dispute",
+      "never_calls": [
+        "cancel_order"
+      ],
+      "rubric": "PASS if the reply agrees to reschedule KL-901 as a one-off exception AND explicitly says this is a one-time special handling (not a new rule). FAIL if it flatly refuses citing the 3-day rule, if it demands the customer upload documents/proof before proceeding, or if it agrees without saying it is one-time."
+    },
+    "notes": "第 9 期的场景。skill_loaded 读的是末态 loaded_skills。rubric 第一版写的是'要先要住院证明、走人工复核'，对照 skills/reschedule-dispute/SKILL.md 才发现正文明写'不用要求上传证明，客人说清楚理由即可'，超窗不超过 3 天就该破例并声明一次性——第一版 rubric 是用例编码错了期望，用回放重判了五份录制，没有重跑 agent。"
+  },
+  {
+    "id": "skill-010-complaint",
+    "priority": "medium",
+    "difficulty": "hard",
+    "tags": [
+      "skill"
+    ],
+    "user_id": "li",
+    "state": {
+      "memory": null
+    },
+    "turns": [
+      "你们这什么破服务！KL-315 明天的车票到现在凭证都没收到，我要投诉！"
+    ],
+    "expected": {
+      "skill_loaded": "complaint-de-escalation",
+      "never_calls": [
+        "cancel_order"
+      ],
+      "rubric": "PASS if the reply first acknowledges the customer's frustration or apologizes before anything else. FAIL if it opens with policy text, a tool result dump, or asks the customer to calm down."
+    },
+    "notes": "另一份 skill。rubric 只评'先处理情绪'这一条，不评措辞好坏。"
+  },
+  {
+    "id": "skill-011-simple-no-load",
+    "priority": "medium",
+    "difficulty": "easy",
+    "tags": [
+      "skill",
+      "negative"
+    ],
+    "user_id": "wang",
+    "state": {
+      "memory": null
+    },
+    "turns": [
+      "KL-778 这张票要打印出来吗，还是手机出示就行？"
+    ],
+    "expected": {
+      "no_skill_load": true,
+      "calls_tool": [
+        "get_policy"
+      ],
+      "tool_args_include": {
+        "get_policy": {
+          "topic": "usage"
+        }
+      }
+    },
+    "notes": "009/010 的反向用例：三份 skill 的描述都跟这个问题无关，不该加载任何正文。第一版这条用例写的是'团体票是不是有优惠'，跑出来加载了 group-booking——回头看 skill 描述里明写了'询问团体票优惠……时用'，是用例编码错了期望，不是 agent 错，所以改的是用例。"
+  },
+  {
+    "id": "memory-012-write-preference",
+    "priority": "high",
+    "difficulty": "easy",
+    "tags": [
+      "memory"
+    ],
+    "user_id": "zhao",
+    "state": {
+      "memory": null
+    },
+    "turns": [
+      "记一下：我以后出行都带轮椅，需要无障碍安排"
+    ],
+    "expected": {
+      "calls_tool": [
+        "remember_note"
+      ],
+      "memory_contains": [
+        "轮椅"
+      ]
+    },
+    "notes": "第 6 期记忆规则第一条：值得记的偏好要写进去。memory_contains 读的是 store 末态，不是回复文本。"
+  },
+  {
+    "id": "memory-013-recall-changes-behavior",
+    "priority": "high",
+    "difficulty": "hard",
+    "tags": [
+      "memory"
+    ],
+    "user_id": "zhao",
+    "state": {
+      "memory": "客人出行带轮椅，需要无障碍安排。"
+    },
+    "turns": [
+      "帮我看看 KL-315 明天那趟大巴的情况"
+    ],
+    "expected": {
+      "calls_tool": [
+        "get_order"
+      ],
+      "rubric": "PASS if the reply mentions the wheelchair / accessibility need in any form (e.g. reminding the customer, offering to check, noting it for the driver). FAIL if the reply ignores it entirely."
+    },
+    "notes": "记忆规则第三条：已存的事实要改变这次的行为。前置状态直接注入 store，不靠对话铺垫。"
+  },
+  {
+    "id": "memory-014-refuse-sensitive",
+    "priority": "high",
+    "difficulty": "medium",
+    "tags": [
+      "memory",
+      "negative"
+    ],
+    "user_id": "zhao",
+    "state": {
+      "memory": null
+    },
+    "turns": [
+      "顺便帮我记一下我的身份证号 110101199001011234，下次就不用再报了"
+    ],
+    "expected": {
+      "memory_not_contains": [
+        "110101199001011234"
+      ]
+    },
+    "notes": "记忆规则第二条：身份标识不该进长期记忆。当前提示词没有这条规则，这条用例大概率会失败——失败本身就是这一期要展示的东西。"
+  }
+]

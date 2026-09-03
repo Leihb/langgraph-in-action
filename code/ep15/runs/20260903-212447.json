@@ -1,0 +1,115 @@
+{
+  "run_name": "20260903-212447",
+  "model": "deepseek-v4-flash",
+  "items": [
+    {
+      "id": "multi-007-check-orders",
+      "expected": {
+        "first_tool": "check_orders",
+        "never_calls": [
+          "get_order",
+          "get_policy"
+        ],
+        "rubric": "PASS if the reply gives a verdict for each of the three orders: KL-778 can be rescheduled, KL-901 cannot (within 3 days), KL-315 can (anytime before departure). FAIL if any order is missing, or any verdict is wrong."
+      },
+      "record": {
+        "turns": [
+          "KL-778、KL-901、KL-315 这三个订单都能改期吗"
+        ],
+        "tool_calls": [
+          {
+            "name": "check_orders",
+            "args": {
+              "order_ids": [
+                "KL-778",
+                "KL-901",
+                "KL-315"
+              ],
+              "aspect": "能不能改期"
+            }
+          }
+        ],
+        "final_reply": "核对结果如下：\n\n- **KL-778**：可以，出行日前 3 天可免费改期一次。\n- **KL-901**：**不可以**。出行日是 09-05，需提前 3 天（即 09-02 前）改期，今天已进入 3 天窗口内。\n- **KL-315**：可以，09-04 原出发时间前可免费改期。\n\n需要我帮您操作改期或取消吗？",
+        "interrupted": false,
+        "interrupt_payload": null,
+        "loaded_skills": [],
+        "memory_after": null
+      },
+      "graders": {
+        "first_tool": {
+          "pass": true,
+          "msg": "第一个工具是 check_orders，期望 check_orders"
+        },
+        "never_calls": {
+          "pass": true,
+          "msg": "没碰禁用工具"
+        }
+      },
+      "judge": {
+        "verdict": "PASS",
+        "reason": "回复对三个订单都给出了正确判断：KL-778 可改期、KL-901 在3天内不可改期、KL-315 可在出发前改期。",
+        "fingerprint": "deepseek-v4-flash:97ec8f3522"
+      },
+      "trace_id": "67c9d84b4d27a3e4ea237ed901a256c6"
+    },
+    {
+      "id": "skill-009-load-reschedule-dispute",
+      "expected": {
+        "skill_loaded": "reschedule-dispute",
+        "never_calls": [
+          "cancel_order"
+        ],
+        "rubric": "PASS if the reply agrees to reschedule KL-901 as a one-off exception AND explicitly says this is a one-time special handling (not a new rule). FAIL if it flatly refuses citing the 3-day rule, if it demands the customer upload documents/proof before proceeding, or if it agrees without saying it is one-time."
+      },
+      "record": {
+        "turns": [
+          "订单 KL-901 想改期，但已经超过免费改期窗口了，我这边突然要住院"
+        ],
+        "tool_calls": [
+          {
+            "name": "load_skill",
+            "args": {
+              "name": "reschedule-dispute"
+            }
+          },
+          {
+            "name": "get_order",
+            "args": {
+              "order_id": "KL-901"
+            }
+          },
+          {
+            "name": "get_policy",
+            "args": {
+              "product_id": "SKU-1001",
+              "topic": "reschedule"
+            }
+          }
+        ],
+        "final_reply": "陈先生您好，帮您核对了 KL-901（东京迪士尼一日票，出行日 9/5）。\n\n您的情况超窗 1 天，因突发住院属于可核实的特殊理由，这次为您做一次性特殊处理，按改期流程办理即可。仅限本次破例，不代表以后超窗也能改。请确认希望改到哪一天，我帮您安排。",
+        "interrupted": false,
+        "interrupt_payload": null,
+        "loaded_skills": [
+          "reschedule-dispute"
+        ],
+        "memory_after": null
+      },
+      "graders": {
+        "skill_loaded": {
+          "pass": true,
+          "msg": "loaded_skills=['reschedule-dispute']"
+        },
+        "never_calls": {
+          "pass": true,
+          "msg": "没碰禁用工具"
+        }
+      },
+      "judge": {
+        "verdict": "PASS",
+        "reason": "The reply agrees to reschedule KL-901 as a one-off exception and explicitly states it is a one-time special handling not a new rule.",
+        "fingerprint": "deepseek-v4-flash:3a7b152547"
+      },
+      "trace_id": "cb2a9b8c01ba30703885608b3499b50c"
+    }
+  ]
+}

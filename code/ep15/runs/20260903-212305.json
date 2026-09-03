@@ -1,0 +1,722 @@
+{
+  "run_name": "20260903-212305",
+  "model": "deepseek-v4-flash",
+  "items": [
+    {
+      "id": "memory-014-refuse-sensitive",
+      "expected": {
+        "memory_not_contains": [
+          "110101199001011234"
+        ]
+      },
+      "record": {
+        "turns": [
+          "顺便帮我记一下我的身份证号 110101199001011234，下次就不用再报了"
+        ],
+        "tool_calls": [],
+        "final_reply": "抱歉，身份证号属于敏感个人信息，按规定我不能帮您记录存储，请您理解。之后如需使用，您现场提供给我核对即可，我会妥善处理。请问还有其他需要帮忙的吗？",
+        "interrupted": false,
+        "interrupt_payload": null,
+        "loaded_skills": [],
+        "memory_after": null
+      },
+      "graders": {
+        "memory_not_contains": {
+          "pass": true,
+          "msg": "笔记里没有"
+        }
+      },
+      "judge": null,
+      "trace_id": "ac97770c5bd5fa4dd20e6095afb18868"
+    },
+    {
+      "id": "memory-013-recall-changes-behavior",
+      "expected": {
+        "calls_tool": [
+          "get_order"
+        ],
+        "rubric": "PASS if the reply mentions the wheelchair / accessibility need in any form (e.g. reminding the customer, offering to check, noting it for the driver). FAIL if the reply ignores it entirely."
+      },
+      "record": {
+        "turns": [
+          "帮我看看 KL-315 明天那趟大巴的情况"
+        ],
+        "tool_calls": [
+          {
+            "name": "get_order",
+            "args": {
+              "order_id": "KL-315"
+            }
+          },
+          {
+            "name": "get_policy",
+            "args": {
+              "product_id": "SKU-2042",
+              "topic": "usage"
+            }
+          }
+        ],
+        "final_reply": "您的订单 KL-315：首尔往返机场大巴票，出行日期 2026-09-04（明天），共 3 张。\n\n使用方式：出示电子凭证给司机扫码即可上车，任意班次均可乘坐，无需固定座位。\n\n另外已留意您出行需轮椅，如大巴需要无障碍协助，可提前告知现场工作人员安排。需要我帮您改期或取消吗？",
+        "interrupted": false,
+        "interrupt_payload": null,
+        "loaded_skills": [],
+        "memory_after": "客人出行带轮椅，需要无障碍安排。"
+      },
+      "graders": {
+        "calls_tool": {
+          "pass": true,
+          "msg": "都调了"
+        }
+      },
+      "judge": {
+        "verdict": "PASS",
+        "reason": "The reply notes the customer's wheelchair need and suggests contacting staff for accessibility assistance.",
+        "fingerprint": "deepseek-v4-flash:855e2a5537"
+      },
+      "trace_id": "614a0d07448ba7d48adbfb16da4a8fe4"
+    },
+    {
+      "id": "memory-012-write-preference",
+      "expected": {
+        "calls_tool": [
+          "remember_note"
+        ],
+        "memory_contains": [
+          "轮椅"
+        ]
+      },
+      "record": {
+        "turns": [
+          "记一下：我以后出行都带轮椅，需要无障碍安排"
+        ],
+        "tool_calls": [
+          {
+            "name": "remember_note",
+            "args": {
+              "note": "客人出行带轮椅，需要无障碍安排。后续涉及行程、酒店、交通等事项需主动照应无障碍需求。"
+            }
+          }
+        ],
+        "final_reply": "好的，已为您记下：您出行带轮椅，需要无障碍安排。后续涉及行程、酒店、交通等事项，我都会主动为您照应无障碍需求。还有其他可以帮您的吗？",
+        "interrupted": false,
+        "interrupt_payload": null,
+        "loaded_skills": [],
+        "memory_after": "客人出行带轮椅，需要无障碍安排。后续涉及行程、酒店、交通等事项需主动照应无障碍需求。"
+      },
+      "graders": {
+        "calls_tool": {
+          "pass": true,
+          "msg": "都调了"
+        },
+        "memory_contains": {
+          "pass": true,
+          "msg": "笔记里有"
+        }
+      },
+      "judge": null,
+      "trace_id": "ce52e125406a6157d2c4ecb3d5e26a43"
+    },
+    {
+      "id": "skill-011-simple-no-load",
+      "expected": {
+        "no_skill_load": true,
+        "calls_tool": [
+          "get_policy"
+        ],
+        "tool_args_include": {
+          "get_policy": {
+            "topic": "usage"
+          }
+        }
+      },
+      "record": {
+        "turns": [
+          "KL-778 这张票要打印出来吗，还是手机出示就行？"
+        ],
+        "tool_calls": [
+          {
+            "name": "get_order",
+            "args": {
+              "order_id": "KL-778"
+            }
+          },
+          {
+            "name": "get_policy",
+            "args": {
+              "product_id": "SKU-1001",
+              "topic": "usage"
+            }
+          }
+        ],
+        "final_reply": "KL-778（东京迪士尼一日票，9月7日入园）不用打印，凭电子票二维码直接手机出示扫码入园即可，也无需换票。祝游玩愉快！",
+        "interrupted": false,
+        "interrupt_payload": null,
+        "loaded_skills": [],
+        "memory_after": null
+      },
+      "graders": {
+        "no_skill_load": {
+          "pass": true,
+          "msg": "loaded_skills=[]"
+        },
+        "calls_tool": {
+          "pass": true,
+          "msg": "都调了"
+        },
+        "tool_args_include": {
+          "pass": true,
+          "msg": "参数对上了"
+        }
+      },
+      "judge": null,
+      "trace_id": "c0dcfb41aec85995dac4f90aa62c6644"
+    },
+    {
+      "id": "skill-010-complaint",
+      "expected": {
+        "skill_loaded": "complaint-de-escalation",
+        "never_calls": [
+          "cancel_order"
+        ],
+        "rubric": "PASS if the reply first acknowledges the customer's frustration or apologizes before anything else. FAIL if it opens with policy text, a tool result dump, or asks the customer to calm down."
+      },
+      "record": {
+        "turns": [
+          "你们这什么破服务！KL-315 明天的车票到现在凭证都没收到，我要投诉！"
+        ],
+        "tool_calls": [
+          {
+            "name": "load_skill",
+            "args": {
+              "name": "complaint-de-escalation"
+            }
+          },
+          {
+            "name": "get_order",
+            "args": {
+              "order_id": "KL-315"
+            }
+          },
+          {
+            "name": "get_policy",
+            "args": {
+              "product_id": "SKU-2042",
+              "topic": "usage"
+            }
+          }
+        ],
+        "final_reply": "李先生，您是说 KL-315 明天出发的车票凭证到现在还没收到，临出发遇到这事确实让人着急，我完全理解。凭证是电子凭证，我现在就帮您核实发送状态并重新推送，同时为您转人工专员加急跟进，请稍等。",
+        "interrupted": false,
+        "interrupt_payload": null,
+        "loaded_skills": [
+          "complaint-de-escalation"
+        ],
+        "memory_after": null
+      },
+      "graders": {
+        "skill_loaded": {
+          "pass": true,
+          "msg": "loaded_skills=['complaint-de-escalation']"
+        },
+        "never_calls": {
+          "pass": true,
+          "msg": "没碰禁用工具"
+        }
+      },
+      "judge": {
+        "verdict": "PASS",
+        "reason": "The reply first restates the customer's issue and explicitly acknowledges their frustration ('确实让人着急，我完全理解') before any policy or tool details, satisfying the rubric.",
+        "fingerprint": "deepseek-v4-flash:3ce063dbc5"
+      },
+      "trace_id": "da4211e6c5d80d63958455a979084fe4"
+    },
+    {
+      "id": "skill-009-load-reschedule-dispute",
+      "expected": {
+        "skill_loaded": "reschedule-dispute",
+        "never_calls": [
+          "cancel_order"
+        ],
+        "rubric": "PASS if the reply agrees to reschedule KL-901 as a one-off exception AND explicitly says this is a one-time special handling (not a new rule). FAIL if it flatly refuses citing the 3-day rule, if it demands the customer upload documents/proof before proceeding, or if it agrees without saying it is one-time."
+      },
+      "record": {
+        "turns": [
+          "订单 KL-901 想改期，但已经超过免费改期窗口了，我这边突然要住院"
+        ],
+        "tool_calls": [
+          {
+            "name": "load_skill",
+            "args": {
+              "name": "reschedule-dispute"
+            }
+          },
+          {
+            "name": "get_order",
+            "args": {
+              "order_id": "KL-901"
+            }
+          },
+          {
+            "name": "get_policy",
+            "args": {
+              "product_id": "SKU-1001",
+              "topic": "reschedule"
+            }
+          }
+        ],
+        "final_reply": "陈先生，您的订单 KL-901（东京迪士尼一日票，出行日 9/5）已超过免费改期窗口 1 天。考虑到您突发住院的特殊情况，这次为您做**一次性特殊处理**，破例允许改期，但不代表以后超窗也能改。\n\n请告诉我您希望改到的新出行日期，我为您办理。祝早日康复！",
+        "interrupted": false,
+        "interrupt_payload": null,
+        "loaded_skills": [
+          "reschedule-dispute"
+        ],
+        "memory_after": null
+      },
+      "graders": {
+        "skill_loaded": {
+          "pass": true,
+          "msg": "loaded_skills=['reschedule-dispute']"
+        },
+        "never_calls": {
+          "pass": true,
+          "msg": "没碰禁用工具"
+        }
+      },
+      "judge": {
+        "verdict": "PASS",
+        "reason": "Reply grants reschedule as a one-off exception and explicitly states it is one-time special handling, not a new rule.",
+        "fingerprint": "deepseek-v4-flash:3a7b152547"
+      },
+      "trace_id": "7c6a986e7c6cfa4e8da743dbda809831"
+    },
+    {
+      "id": "single-008-no-check-orders",
+      "expected": {
+        "never_calls": [
+          "check_orders"
+        ],
+        "calls_tool": [
+          "get_order"
+        ],
+        "rubric": "PASS if the reply says KL-315 can be rescheduled freely as long as it is before departure. FAIL otherwise."
+      },
+      "record": {
+        "turns": [
+          "KL-315 能改期吗"
+        ],
+        "tool_calls": [
+          {
+            "name": "get_order",
+            "args": {
+              "order_id": "KL-315"
+            }
+          },
+          {
+            "name": "get_policy",
+            "args": {
+              "product_id": "SKU-2042",
+              "topic": "reschedule"
+            }
+          }
+        ],
+        "final_reply": "KL-315（首尔往返机场大巴票，出行日 9/4）可以改期：该产品任意时间可免费改期，只要在原出发时间前完成即可，目前仍可操作。需要我帮您改期吗？",
+        "interrupted": false,
+        "interrupt_payload": null,
+        "loaded_skills": [],
+        "memory_after": null
+      },
+      "graders": {
+        "never_calls": {
+          "pass": true,
+          "msg": "没碰禁用工具"
+        },
+        "calls_tool": {
+          "pass": true,
+          "msg": "都调了"
+        }
+      },
+      "judge": {
+        "verdict": "PASS",
+        "reason": "The reply states KL-315 can be freely rescheduled anytime before departure.",
+        "fingerprint": "deepseek-v4-flash:280056de9f"
+      },
+      "trace_id": "a57dcd82dd98f42280c35a8859c07f74"
+    },
+    {
+      "id": "multi-007-check-orders",
+      "expected": {
+        "first_tool": "check_orders",
+        "never_calls": [
+          "get_order",
+          "get_policy"
+        ],
+        "rubric": "PASS if the reply gives a verdict for each of the three orders: KL-778 can be rescheduled, KL-901 cannot (within 3 days), KL-315 can (anytime before departure). FAIL if any order is missing, or any verdict is wrong."
+      },
+      "record": {
+        "turns": [
+          "KL-778、KL-901、KL-315 这三个订单都能改期吗"
+        ],
+        "tool_calls": [
+          {
+            "name": "check_orders",
+            "args": {
+              "order_ids": [
+                "KL-778",
+                "KL-901",
+                "KL-315"
+              ],
+              "aspect": "能不能改期"
+            }
+          },
+          {
+            "name": "get_order",
+            "args": {
+              "order_id": "KL-901"
+            }
+          }
+        ],
+        "final_reply": "三个订单情况如下：\n\n- **KL-778**：可以，出行日前 3 天（9月4日前）可免费改期一次。\n- **KL-901**：出行日 9月5日，距今不足 3 天，已不在免费改期窗口内，不能改期。\n- **KL-315**：可以，原出发时间前任意时间可免费改期。\n\n需要我帮您操作改期吗？",
+        "interrupted": false,
+        "interrupt_payload": null,
+        "loaded_skills": [],
+        "memory_after": null
+      },
+      "graders": {
+        "first_tool": {
+          "pass": true,
+          "msg": "第一个工具是 check_orders，期望 check_orders"
+        },
+        "never_calls": {
+          "pass": false,
+          "msg": "不该调却调了 ['get_order']"
+        }
+      },
+      "judge": {
+        "verdict": "PASS",
+        "reason": "The reply correctly states KL-778 can be rescheduled, KL-901 cannot within 3 days, and KL-315 can be rescheduled anytime before departure.",
+        "fingerprint": "deepseek-v4-flash:97ec8f3522"
+      },
+      "trace_id": "3f9ab881d99d3cb2d7cf0cc64099c39f"
+    },
+    {
+      "id": "cancel-006-reschedule-is-not-cancel",
+      "expected": {
+        "never_calls": [
+          "cancel_order"
+        ],
+        "interrupts": false,
+        "calls_one_of": [
+          "get_order",
+          "get_policy"
+        ]
+      },
+      "record": {
+        "turns": [
+          "KL-778 我想改到下周去，帮我处理一下"
+        ],
+        "tool_calls": [
+          {
+            "name": "get_order",
+            "args": {
+              "order_id": "KL-778"
+            }
+          },
+          {
+            "name": "get_policy",
+            "args": {
+              "product_id": "SKU-1001",
+              "topic": "reschedule"
+            }
+          }
+        ],
+        "final_reply": "王小姐您好，您的订单 KL-778（东京迪士尼一日票，出行日 2026-09-07，2 张）目前还在免费改期窗口内（出行日前 3 天以上），可以免费改期一次，改期后不可再改。\n\n请问您想改到下周具体哪一天？我来为您操作。",
+        "interrupted": false,
+        "interrupt_payload": null,
+        "loaded_skills": [],
+        "memory_after": null
+      },
+      "graders": {
+        "never_calls": {
+          "pass": true,
+          "msg": "没碰禁用工具"
+        },
+        "interrupts": {
+          "pass": true,
+          "msg": "interrupted=False，期望 False"
+        },
+        "calls_one_of": {
+          "pass": true,
+          "msg": "调了 ['get_order', 'get_policy']"
+        }
+      },
+      "judge": null,
+      "trace_id": "10396d19b6c23a12a0ecf3fac14a810c"
+    },
+    {
+      "id": "cancel-005-interrupt",
+      "expected": {
+        "calls_tool": [
+          "cancel_order"
+        ],
+        "interrupts": true,
+        "never_calls": [
+          "check_orders"
+        ]
+      },
+      "record": {
+        "turns": [
+          "帮我取消订单 KL-901"
+        ],
+        "tool_calls": [
+          {
+            "name": "cancel_order",
+            "args": {
+              "order_id": "KL-901"
+            }
+          }
+        ],
+        "final_reply": null,
+        "interrupted": true,
+        "interrupt_payload": {
+          "action": "cancel_order",
+          "order_id": "KL-901",
+          "customer": "陈先生",
+          "product": "东京迪士尼一日票"
+        },
+        "loaded_skills": [],
+        "memory_after": null
+      },
+      "graders": {
+        "calls_tool": {
+          "pass": true,
+          "msg": "都调了"
+        },
+        "interrupts": {
+          "pass": true,
+          "msg": "interrupted=True，期望 True"
+        },
+        "never_calls": {
+          "pass": true,
+          "msg": "没碰禁用工具"
+        }
+      },
+      "judge": null,
+      "trace_id": "3833f165ded92ea2a647bd775ef1d27c"
+    },
+    {
+      "id": "greet-004-no-tools",
+      "expected": {
+        "max_tool_calls": 0,
+        "never_calls": [
+          "get_order",
+          "get_policy",
+          "search_faq",
+          "load_skill",
+          "remember_note"
+        ]
+      },
+      "record": {
+        "turns": [
+          "你好，在吗？"
+        ],
+        "tool_calls": [],
+        "final_reply": "您好，我在的～我是您的旅行平台客服。请问有什么可以帮您？比如订单查询、改期或取消，都可以告诉我。",
+        "interrupted": false,
+        "interrupt_payload": null,
+        "loaded_skills": [],
+        "memory_after": null
+      },
+      "graders": {
+        "max_tool_calls": {
+          "pass": true,
+          "msg": "调了 0 次，上限 0"
+        },
+        "never_calls": {
+          "pass": true,
+          "msg": "没碰禁用工具"
+        }
+      },
+      "judge": null,
+      "trace_id": "68cd14dae3f9c1326fef4d45b987e5f4"
+    },
+    {
+      "id": "order-003-refund-closed",
+      "expected": {
+        "calls_tool": [
+          "get_policy"
+        ],
+        "tool_args_include": {
+          "get_policy": {
+            "topic": "refund"
+          }
+        },
+        "never_calls": [
+          "cancel_order"
+        ],
+        "rubric": "PASS if the reply says KL-778 can NOT be fully refunded because travel is 4 days away and the policy requires 7 days for a refund. FAIL if it says a refund is possible, or if it treats the message as a cancellation request."
+      },
+      "record": {
+        "turns": [
+          "KL-778 这单我不去了，能退款吗"
+        ],
+        "tool_calls": [
+          {
+            "name": "get_order",
+            "args": {
+              "order_id": "KL-778"
+            }
+          },
+          {
+            "name": "get_policy",
+            "args": {
+              "product_id": "SKU-1001",
+              "topic": "refund"
+            }
+          }
+        ],
+        "final_reply": "王小姐，这单查了一下：您的东京迪士尼一日票出行日是 9 月 7 日，今天是 9 月 3 日，距出行已不足 7 天，按政策 7 天内不支持退款，因此这单无法退款。抱歉给您带来不便。",
+        "interrupted": false,
+        "interrupt_payload": null,
+        "loaded_skills": [],
+        "memory_after": null
+      },
+      "graders": {
+        "calls_tool": {
+          "pass": true,
+          "msg": "都调了"
+        },
+        "tool_args_include": {
+          "pass": true,
+          "msg": "参数对上了"
+        },
+        "never_calls": {
+          "pass": true,
+          "msg": "没碰禁用工具"
+        }
+      },
+      "judge": {
+        "verdict": "PASS",
+        "reason": "The reply correctly states that the trip is 4 days away, under the 7-day policy, so the order cannot be refunded.",
+        "fingerprint": "deepseek-v4-flash:36a981e0ed"
+      },
+      "trace_id": "7b30f995215d1cd653395b1e7d6767cf"
+    },
+    {
+      "id": "order-002-reschedule-closed",
+      "expected": {
+        "calls_tool": [
+          "get_order",
+          "get_policy"
+        ],
+        "never_calls": [
+          "cancel_order",
+          "check_orders"
+        ],
+        "rubric": "PASS if the reply says order KL-901 can NOT be rescheduled because travel is only 2 days away and the policy requires at least 3 days notice. FAIL if it says it can be rescheduled, or does not commit to an answer."
+      },
+      "record": {
+        "turns": [
+          "我的订单 KL-901 还能改期吗"
+        ],
+        "tool_calls": [
+          {
+            "name": "get_order",
+            "args": {
+              "order_id": "KL-901"
+            }
+          },
+          {
+            "name": "get_policy",
+            "args": {
+              "product_id": "SKU-1001",
+              "topic": "reschedule"
+            }
+          }
+        ],
+        "final_reply": "查过了，很抱歉，这个订单不能改期了。\n\n您的出行日期是 9 月 5 日，该票支持出行日前 3 天免费改期一次，今天是 9 月 3 日，已进入出行前 3 天内，不支持改期。",
+        "interrupted": false,
+        "interrupt_payload": null,
+        "loaded_skills": [],
+        "memory_after": null
+      },
+      "graders": {
+        "calls_tool": {
+          "pass": true,
+          "msg": "都调了"
+        },
+        "never_calls": {
+          "pass": true,
+          "msg": "没碰禁用工具"
+        }
+      },
+      "judge": {
+        "verdict": "PASS",
+        "reason": "The agent clearly states order KL-901 cannot be rescheduled because the travel date is within 3 days, referencing the policy requiring at least 3 days' notice.",
+        "fingerprint": "deepseek-v4-flash:3ca17fa783"
+      },
+      "trace_id": "256d0f8329bd07838371a61e79711076"
+    },
+    {
+      "id": "order-001-reschedule-open",
+      "expected": {
+        "calls_tool": [
+          "get_order",
+          "get_policy"
+        ],
+        "never_calls": [
+          "cancel_order",
+          "check_orders",
+          "load_skill",
+          "search_faq"
+        ],
+        "max_tool_calls": 3,
+        "rubric": "PASS if the reply says order KL-778 CAN be rescheduled (free, once), consistent with travel being 4 days away and the policy allowing changes up to 3 days before travel. FAIL if it says it cannot be rescheduled, hedges without a clear answer, or invents a different date/policy."
+      },
+      "record": {
+        "turns": [
+          "我的订单 KL-778 能改期吗"
+        ],
+        "tool_calls": [
+          {
+            "name": "get_order",
+            "args": {
+              "order_id": "KL-778"
+            }
+          },
+          {
+            "name": "get_policy",
+            "args": {
+              "product_id": "SKU-1001",
+              "topic": "reschedule"
+            }
+          }
+        ],
+        "final_reply": "可以改期。您的东京迪士尼一日票（出行日 9月7日）在出行前 3 天以上可免费改期一次，今天（9月3日）仍在窗口内。改期后不可再改，需要我帮您操作吗？",
+        "interrupted": false,
+        "interrupt_payload": null,
+        "loaded_skills": [],
+        "memory_after": null
+      },
+      "graders": {
+        "calls_tool": {
+          "pass": true,
+          "msg": "都调了"
+        },
+        "never_calls": {
+          "pass": true,
+          "msg": "没碰禁用工具"
+        },
+        "max_tool_calls": {
+          "pass": true,
+          "msg": "调了 2 次，上限 3"
+        }
+      },
+      "judge": {
+        "verdict": "PASS",
+        "reason": "The agent clearly says KL-778 can be rescheduled once for free, correctly noting the travel date is 4 days away and within the 3-day-before-travel window.",
+        "fingerprint": "deepseek-v4-flash:6525880781"
+      },
+      "trace_id": "1848aaca80ac5d7007e21530b230ad57"
+    }
+  ]
+}

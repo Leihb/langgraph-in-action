@@ -1,4 +1,4 @@
-"""跑第 11 期：
+"""跑第 14 期（命令行版，跟第 11 期一样）：
     uv run python -m ep14.main wang t1 "订单 KL-901 想改期，但已经超过免费改期窗口了，我这边突然要住院"
     uv run python -m ep14.main --resume <user_id> <thread_id> approve
     uv run python -m ep14.main --history <thread_id>

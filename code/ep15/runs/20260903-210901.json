@@ -1,0 +1,155 @@
+{
+  "run_name": "20260903-210901",
+  "model": "deepseek-v4-flash",
+  "items": [
+    {
+      "id": "order-001-reschedule-open",
+      "expected": {
+        "calls_tool": [
+          "get_order",
+          "get_policy"
+        ],
+        "never_calls": [
+          "cancel_order",
+          "check_orders",
+          "load_skill",
+          "search_faq"
+        ],
+        "max_tool_calls": 3,
+        "rubric": "PASS if the reply says order KL-778 CAN be rescheduled (free, once), consistent with travel being 4 days away and the policy allowing changes up to 3 days before travel. FAIL if it says it cannot be rescheduled, hedges without a clear answer, or invents a different date/policy."
+      },
+      "record": {
+        "turns": [
+          "我的订单 KL-778 能改期吗"
+        ],
+        "tool_calls": [
+          {
+            "name": "get_order",
+            "args": {
+              "order_id": "KL-778"
+            }
+          },
+          {
+            "name": "get_policy",
+            "args": {
+              "product_id": "SKU-1001",
+              "topic": "reschedule"
+            }
+          }
+        ],
+        "final_reply": "您的订单 KL-778（东京迪士尼一日票，出行日 2026-09-07）目前可以免费改期一次，改期后不可再改。需要我帮您操作改期吗？",
+        "interrupted": false,
+        "interrupt_payload": null,
+        "loaded_skills": [],
+        "memory_after": null
+      },
+      "graders": {
+        "calls_tool": {
+          "pass": true,
+          "msg": "都调了"
+        },
+        "never_calls": {
+          "pass": true,
+          "msg": "没碰禁用工具"
+        },
+        "max_tool_calls": {
+          "pass": true,
+          "msg": "调了 2 次，上限 3"
+        }
+      },
+      "judge": {
+        "verdict": "PASS",
+        "reason": "The reply clearly states order KL-778 can be rescheduled once for free, matching the policy and travel window, with no hedging or invented policy.",
+        "fingerprint": "deepseek-v4-flash:6525880781"
+      },
+      "trace_id": "3320e28c0501b72024ff874f0505db2b"
+    },
+    {
+      "id": "greet-004-no-tools",
+      "expected": {
+        "max_tool_calls": 0,
+        "never_calls": [
+          "get_order",
+          "get_policy",
+          "search_faq",
+          "load_skill",
+          "remember_note"
+        ]
+      },
+      "record": {
+        "turns": [
+          "你好，在吗？"
+        ],
+        "tool_calls": [],
+        "final_reply": "您好，在的～我是旅行平台客服，很高兴为您服务。请问有什么可以帮您？",
+        "interrupted": false,
+        "interrupt_payload": null,
+        "loaded_skills": [],
+        "memory_after": null
+      },
+      "graders": {
+        "max_tool_calls": {
+          "pass": true,
+          "msg": "调了 0 次，上限 0"
+        },
+        "never_calls": {
+          "pass": true,
+          "msg": "没碰禁用工具"
+        }
+      },
+      "judge": null,
+      "trace_id": "e471650c57cc42d37b8f275a36aeb4a2"
+    },
+    {
+      "id": "cancel-005-interrupt",
+      "expected": {
+        "calls_tool": [
+          "cancel_order"
+        ],
+        "interrupts": true,
+        "never_calls": [
+          "check_orders"
+        ]
+      },
+      "record": {
+        "turns": [
+          "帮我取消订单 KL-901"
+        ],
+        "tool_calls": [
+          {
+            "name": "cancel_order",
+            "args": {
+              "order_id": "KL-901"
+            }
+          }
+        ],
+        "final_reply": null,
+        "interrupted": true,
+        "interrupt_payload": {
+          "action": "cancel_order",
+          "order_id": "KL-901",
+          "customer": "陈先生",
+          "product": "东京迪士尼一日票"
+        },
+        "loaded_skills": [],
+        "memory_after": null
+      },
+      "graders": {
+        "calls_tool": {
+          "pass": true,
+          "msg": "都调了"
+        },
+        "interrupts": {
+          "pass": true,
+          "msg": "interrupted=True，期望 True"
+        },
+        "never_calls": {
+          "pass": true,
+          "msg": "没碰禁用工具"
+        }
+      },
+      "judge": null,
+      "trace_id": "05790fa36d31d64ef11bbdf51f85d633"
+    }
+  ]
+}
