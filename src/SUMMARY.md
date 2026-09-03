@@ -21,7 +21,7 @@
 - [第 12 期：FastAPI 包一层——流式、会话、最简鉴权](part2/ep12.md)
 - [第 13 期：换真实存储——SQLite、Postgres 与长任务](part2/ep13.md)
 - [第 14 期：放到线上给同事用——容器、密钥、成本](part2/ep14.md)
-- [第 15 期：什么时候直接拿 deepagents](part2/ep15.md)
+- [第 15 期：评测——改完之后，怎么知道是好了还是坏了](part2/ep15.md)
 
 # Part 3 · 经典例子重做
 
