@@ -1,16 +1,26 @@
 # 笨办法学 Agent · 用 LangGraph 上线
 
-> 仓库名 langgraph-in-action。同系列第一本《笨办法学 Agent》在
-> [learn-agent-the-hard-way](https://github.com/Leihb/learn-agent-the-hard-way)，
-> 不需要先读那本也能读这本。
+> 仓库名 langgraph-in-action。
 
 **任何人都可以写 agent。这个仓库教你把场景说清楚，剩下的交给 LangGraph 和你的 AI。**
 
-这是《笨办法学 Agent》系列的第二本。第一本不用框架，亲手写出一个 agent harness 的每一层，
-为的是看懂；这一本用 LangGraph，为的是上线。两本书没有强制的先后顺序——第一本的每个
-练习都不长在你脑子里也能跟着这本往下走。读过第一本的话，正文会不断指回对应的练习，
-每次指回都会顺带说清楚那个练习解决的是什么问题，比如 checkpointer 对应第一本练习 11
-到 13 的会话文件加压缩、interrupt 对应练习 9 到 10 的权限闸门。
+这是《笨办法学 Agent》系列的第二本，用 LangGraph 把真实场景的 agent 做出来、放到线上
+给人用，目的是上线。读过第一本的话，正文会不断指回对应的练习，每次指回都会顺带说清楚
+那个练习解决的是什么问题，比如 checkpointer 对应第一本练习 11 到 13 的会话文件加压缩、
+interrupt 对应练习 9 到 10 的权限闸门；没读过第一本也不影响跟着这本往下走。
+
+## 这套书一共三本
+
+《笨办法学 Agent》系列现在有三本，各自独立，不要求先后顺序：
+
+- **[笨办法学 Agent · 亲手打造一个 harness](https://github.com/Leihb/learn-agent-the-hard-way)**——
+  不用任何框架，32 个练习亲手写出一个 agent harness 的每一层，目的是看懂。
+- **[笨办法学 Agent · 用 LangGraph 上线](https://github.com/Leihb/langgraph-in-action)（这一本）**——
+  用 LangGraph 把真实场景的 agent 做出来、放到线上给人用，目的是上线。
+- **[让 agent 替你干活 · 不写代码，用 octo 把活干完](https://github.com/Leihb/octo-at-work)**——
+  不写一行代码，用装在自己电脑上的 octo 把日常的活干完，给不写代码的打工人。
+
+三本共享同一句话：agent 没有秘密架构，会不会用，看你会不会把活/场景/工具边界说清楚。
 
 ## 📖 在线阅读
 
