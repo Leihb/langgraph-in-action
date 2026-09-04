@@ -1,0 +1,64 @@
+# SOP：给客人发起补偿。
+#
+# 这份文件是数据，不是代码：改流程改这里，执行器（graph.py）一行不动。
+# 四种步骤：
+#   call     调一个内部接口，结果存进 facts[save_as]
+#   check    跑几条代码规则，任一条不过就停下、告诉坐席为什么
+#   ask      facts 里缺字段就停下来问坐席（interrupt），坐席的回答由模型抽成字段
+#   approve  按金额分档：auto 直接过；其他档停下来等审批人（interrupt），拒绝就回退
+# `when` 是可选条件，不满足就跳过这一步。
+
+name: compensation
+title: 发起补偿
+description: 客人因为服务问题（商户漏发、行程取消、体验差）要给现金或积分补偿时走这条流程
+fields: [order_id, amount, reason, comp_type]
+
+steps:
+  - id: load_order
+    kind: call
+    tool: get_order
+    args: {order_id: order_id}
+    save_as: order
+
+  - id: eligibility
+    kind: check
+    rules: [order_paid, not_in_fraud_review, no_open_compensation]
+
+  - id: collect
+    kind: ask
+    fields: [amount, reason, comp_type]
+    prompt: 补偿金额（USD）、补偿原因、补偿方式（cash 现金原路退 / credit 积分）
+
+  - id: gateway_balance
+    kind: call
+    when: comp_type == 'cash'
+    tool: get_gateway_balance
+    args: {order_id: order_id}
+    save_as: gateway_balance
+
+  - id: bank_info
+    kind: ask
+    when: comp_type == 'cash' and amount > gateway_balance
+    fields: [bank_account]
+    prompt: 网关可原路退的余额不够，超出部分要手工转账，请提供客人的收款账户
+
+  - id: approval
+    kind: approve
+    tiers:
+      - {max: 50, level: auto}
+      - {max: 500, level: supervisor}
+      - {max: 2000, level: manager}
+      - {level: director}
+    on_reject: {goto: collect, reset: [amount, bank_account]}
+
+  - id: submit
+    kind: call
+    tool: apply_compensation
+    args: {order_id: order_id, amount: amount, comp_type: comp_type, reason: reason, bank_account: bank_account, approver: approver}
+    save_as: compensation
+
+  - id: note
+    kind: call
+    tool: add_booking_note
+    args: {order_id: order_id, compensation: compensation}
+    save_as: note

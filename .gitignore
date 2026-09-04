@@ -23,3 +23,4 @@ code/ex01_email_triage/data/outbox.jsonl
 code/ex02_sql_agent/data/Chinook.db
 code/ex03_support_state_machine/data/cancel_log.txt
 code/ex06_airline_support/data/
+code/gap01_sop_executor/data/
