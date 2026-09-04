@@ -83,8 +83,7 @@ def lookup_order(order_id: str, runtime: ToolRuntime[None, SupportState]) -> Com
 ### 中间件换提示词和工具：每次调模型前跑一遍
 
 ```python
-@wrap_model_call
-def apply_step_config(request: ModelRequest, handler) -> ModelResponse:
+def _step_request(request: ModelRequest) -> ModelRequest:
     step = request.state.get("current_step") or "identify"
     cfg = STEP_CONFIG[step]
     missing = [k for k in cfg["requires"] if not request.state.get(k)]
@@ -92,13 +91,24 @@ def apply_step_config(request: ModelRequest, handler) -> ModelResponse:
         raise RuntimeError(f"进入 {step} 阶段但 state 缺字段 {missing}")
     prompt = cfg["prompt"].format(**{**request.state, "today": date.today().isoformat()})
     tools = [t for t in request.tools if t.name in cfg["tools"]]
-    return handler(request.override(system_message=SystemMessage(prompt), tools=tools))
+    return request.override(system_message=SystemMessage(prompt), tools=tools)
+
+
+class StepConfigMiddleware(AgentMiddleware):
+    def wrap_model_call(self, request: ModelRequest, handler) -> ModelResponse:
+        return handler(_step_request(request))
+
+    async def awrap_model_call(self, request: ModelRequest, handler) -> ModelResponse:
+        return await handler(_step_request(request))
 ```
 
-`@wrap_model_call` 包住每一次模型调用。函数拿到这次请求（里面有 state、消息、全部
-工具），改两样再交给 `handler` 真正去调：系统提示词按当前步骤从 `STEP_CONFIG` 里取、
-用 state 里的字段填好；工具列表过滤到这一步允许的几个。第 1 期讲 deepagents 时说过
-中间件是"固定切口挂钩子"，这就是那个钩子，在这个例子里它正好够用。
+中间件包住每一次模型调用。`_step_request` 拿到这次请求（里面有 state、消息、全部
+工具），改两样再交回去真正去调：系统提示词按当前步骤从 `STEP_CONFIG` 里取、
+用 state 里的字段填好；工具列表过滤到这一步允许的几个。同步和异步两个入口
+（`wrap_model_call` / `awrap_model_call`）都要实现——官方文档用的 `@wrap_model_call`
+装饰器只生成同步那一个，命令行 `invoke()` 没问题，一旦这个 agent 被放进 FastAPI 用
+`ainvoke()` 调就会报 NotImplementedError，例子 7 挂进服务时撞见的。第 1 期讲 deepagents 时
+说过中间件是"固定切口挂钩子"，这就是那个钩子，在这个例子里它正好够用。
 
 `requires` 那几行是给自己的保险：进 classify 阶段时 state 里必须已经有订单字段——没有
 就是上一步的工具没写对，这是代码 bug，当场报错，别让模型拿着空白订单号往下聊。
@@ -251,6 +261,12 @@ bug。这一篇跑的几十轮里它一次没触发——这是它该有的样�
 提了一句可以加，没实现）；多了 `requires` 检查。`request.override()` 在这个版本里改
 系统提示词的参数名是 `system_message`（传一个 `SystemMessage`），官方文档写的
 `system_prompt` 在锁定的版本上不存在。
+
+**为什么中间件要写成类、实现两个方法？** 官方文档里的 `@wrap_model_call` 装饰器写法只有
+同步版本。这一篇最初也是那样写的，命令行跑全部正常；例子 7 把这个 agent 挂进 FastAPI 用
+`ainvoke()` 调，第一次请求就报 `NotImplementedError: Asynchronous implementation of
+awrap_model_call is not available`。改成继承 `AgentMiddleware`、同步异步各实现一个，两边共用
+`_step_request`。凡是可能进服务的 agent，中间件一开始就按这个写。
 
 **为什么不用 SummarizationMiddleware？** 官方例子挂了一个，对话超过一定 token 数就把
 早期消息压成摘要。这一篇的对话最多十几条消息，用不上；要加就是往 `middleware=[...]`

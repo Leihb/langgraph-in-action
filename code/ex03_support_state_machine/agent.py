@@ -11,7 +11,7 @@
 from datetime import date
 
 from langchain.agents import create_agent
-from langchain.agents.middleware import ModelRequest, ModelResponse, wrap_model_call
+from langchain.agents.middleware import AgentMiddleware, ModelRequest, ModelResponse
 from langchain_core.messages import SystemMessage
 
 from common.llm import chat_model
@@ -20,8 +20,7 @@ from ex03_support_state_machine.state import SupportState
 from ex03_support_state_machine.tools import ALL_TOOLS
 
 
-@wrap_model_call
-def apply_step_config(request: ModelRequest, handler) -> ModelResponse:
+def _step_request(request: ModelRequest) -> ModelRequest:
     """每次调模型之前跑一次：读 current_step，换提示词、换工具。"""
     step = request.state.get("current_step") or "identify"
     cfg = STEP_CONFIG[step]
@@ -31,7 +30,22 @@ def apply_step_config(request: ModelRequest, handler) -> ModelResponse:
         raise RuntimeError(f"进入 {step} 阶段但 state 缺字段 {missing}")
     prompt = cfg["prompt"].format(**{**request.state, "today": date.today().isoformat()})
     tools = [t for t in request.tools if t.name in cfg["tools"]]
-    return handler(request.override(system_message=SystemMessage(prompt), tools=tools))
+    return request.override(system_message=SystemMessage(prompt), tools=tools)
+
+
+class StepConfigMiddleware(AgentMiddleware):
+    """同步、异步两个入口都实现。只写同步版的话，用 `invoke()`/`stream()` 跑没问题，
+    一旦这个 agent 被放进 FastAPI 用 `ainvoke()` 调，会直接报 NotImplementedError——
+    例子 7 把它挂进服务时撞见的。"""
+
+    def wrap_model_call(self, request: ModelRequest, handler) -> ModelResponse:
+        return handler(_step_request(request))
+
+    async def awrap_model_call(self, request: ModelRequest, handler) -> ModelResponse:
+        return await handler(_step_request(request))
+
+
+apply_step_config = StepConfigMiddleware()
 
 
 def build_agent(checkpointer):
