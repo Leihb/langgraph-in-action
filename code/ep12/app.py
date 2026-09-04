@@ -1,4 +1,4 @@
-"""第 12 期：把第 11 期那个客服 agent 包进一个能给同事用的 HTTP 服务。
+"""第 12 期：把第 11 期那个客服 agent 包进一个能给别人用的 HTTP 服务。
 
     uv run uvicorn ep12.app:app --port 8000
 
