@@ -21,3 +21,4 @@ code/ep15/data/cancel_log.txt
 code/ex01_email_triage/data/tickets.jsonl
 code/ex01_email_triage/data/outbox.jsonl
 code/ex02_sql_agent/data/Chinook.db
+code/ex03_support_state_machine/data/cancel_log.txt
