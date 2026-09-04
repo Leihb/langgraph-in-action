@@ -1,0 +1,47 @@
+[
+  {
+    "id": "m01", "conversation_id": "c1", "received_at": "2026-09-04T09:12:00",
+    "from": "wang.hui@example.com", "subject": "东京迪士尼门票想改日期",
+    "body": "你好，我订的东京迪士尼一日票（订单 KL-778）原本是 9 月 8 日去，行程有变，想改到 9 月 10 日，两张票都改。麻烦看下能不能改，谢谢。王慧"
+  },
+  {
+    "id": "m02", "conversation_id": "c2", "received_at": "2026-09-04T09:30:00",
+    "from": "chen.jun@example.com", "subject": "申请退款",
+    "body": "我买的大阪周游卡用不上了，想申请退款。请问怎么操作？陈俊"
+  },
+  {
+    "id": "m03", "conversation_id": "c3", "received_at": "2026-09-04T09:41:00",
+    "from": "zhao.min@example.com", "subject": "包车司机迟到两小时，要求赔偿",
+    "body": "9 月 2 日北海道包车第一天，司机迟到了两个多小时，导致我们错过了预约的午餐。订单号 KL 502。我要求赔偿至少三百美元，另外请给我开一张发票。赵敏"
+  },
+  {
+    "id": "m04", "conversation_id": "c4", "received_at": "2026-09-04T10:05:00",
+    "from": "zhang.wei@example.com", "subject": "帮朋友问一下 KL-778 能不能退",
+    "body": "我朋友的订单 KL-778 东京迪士尼门票，她去不了了，能全额退吗？她没空发邮件让我帮问。张伟"
+  },
+  {
+    "id": "m05", "conversation_id": "c2", "received_at": "2026-09-04T10:20:00",
+    "from": "chen.jun@example.com", "subject": "Re: 申请退款",
+    "body": "订单号是 KL-901。原因是同行的人生病了，行程取消。陈俊"
+  },
+  {
+    "id": "m06", "conversation_id": "c5", "received_at": "2026-09-04T11:02:00",
+    "from": "wang.hui@example.com", "subject": "补充：迪士尼改期",
+    "body": "刚才那封邮件忘了说，如果 9 月 10 日没票，9 月 11 日也可以。订单 KL-778。王慧"
+  },
+  {
+    "id": "m07", "conversation_id": "c6", "received_at": "2026-09-04T11:30:00",
+    "from": "liu.yang@example.com", "subject": "表扬一下你们的客服",
+    "body": "上周富士山一日游的导游小林非常专业，讲解细致，全程照顾到每个人。想表扬一下，希望你们能转达。刘洋"
+  },
+  {
+    "id": "m08", "conversation_id": "c7", "received_at": "2026-09-04T13:15:00",
+    "from": "ops@hokkaido-charter.co.jp", "subject": "KL-315 明日团次取消通知",
+    "body": "贵司订单 KL-315（富士山一日游，9 月 5 日）因台风预警，明日团次取消。请协助通知客人并安排改期或退款。北海道包车运营部"
+  },
+  {
+    "id": "m09", "conversation_id": "c8", "received_at": "2026-09-04T14:00:00",
+    "from": "newsletter@travel-deals.example.net", "subject": "本周特惠：东南亚机票低至 3 折",
+    "body": "亲爱的旅行者，本周精选特惠……点击查看全部优惠。如不想再收到此邮件请点击退订。"
+  }
+]
