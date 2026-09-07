@@ -24,7 +24,7 @@ interrupt 对应练习 9 到 10 的权限闸门；没读过第一本也不影响
 
 ## 📖 在线阅读
 
-**https://leihb.github.io/langgraph-in-action/**
+**https://leihb.com/langgraph-in-action/**
 
 内容分五部分：
 
