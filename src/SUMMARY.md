@@ -39,10 +39,6 @@
 - [非结构化邮件到结构化工单](part4/gap02-email-to-ticket.md)
 - [对话式数据分析——SQL、图表、多轮细化](part4/gap03-conversational-analytics.md)
 
-# Part 5 · 读者场景
-
-- [怎么交场景](part5/how-to-submit.md)
-
 ---
 
 [后记](postscript.md)
