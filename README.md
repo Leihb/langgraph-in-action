@@ -9,18 +9,16 @@
 那个练习解决的是什么问题，比如 checkpointer 对应第一本练习 11 到 13 的会话文件加压缩、
 interrupt 对应练习 9 到 10 的权限闸门；没读过第一本也不影响跟着这本往下走。
 
-## 这套书一共三本
+## 这套书一共两本
 
-《笨办法学 Agent》系列现在有三本，各自独立，不要求先后顺序：
+《笨办法学 Agent》系列现在有两本，各自独立，不要求先后顺序：
 
 - **[笨办法学 Agent · 亲手打造一个 harness](https://github.com/Leihb/learn-agent-the-hard-way)**——
   不用任何框架，32 个练习亲手写出一个 agent harness 的每一层，目的是看懂。
 - **[笨办法学 Agent · 用 LangGraph 上线](https://github.com/Leihb/langgraph-in-action)（这一本）**——
   用 LangGraph 把真实场景的 agent 做出来、放到线上给人用，目的是上线。
-- **[让 agent 替你干活 · 不写代码，用 octo 把活干完](https://github.com/Leihb/octo-at-work)**——
-  不写一行代码，用装在自己电脑上的 octo 把日常的活干完，给不写代码的打工人。
 
-三本共享同一句话：agent 没有秘密架构，会不会用，看你会不会把活/场景/工具边界说清楚。
+两本共享同一句话：agent 没有秘密架构，会不会用，看你会不会把活/场景/工具边界说清楚。
 
 ## 📖 在线阅读
 
